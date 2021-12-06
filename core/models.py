@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 
 # create a new user
@@ -32,23 +32,26 @@ class MyAccountManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+
 def get_profile_image_filepath(self):
     return f'profile_images/{self.pk}/{"profile_image.png"}'
+
 
 def get_default_profile_image():
     return "media/logo_1080_1080.png"
 
-class Account(AbstractBaseUser):
+
+class Account(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(verbose_name="email", max_length=60, unique=True)
     username = models.CharField(max_length=30, unique=True, blank=True)
-    first_name = models.CharField(max_length=30, unique=False)
-    last_name = models.CharField(max_length=30, unique=False)
-    created_at = models.DateTimeField(verbose_name="create at", auto_now_add=True)
-    updated_at = models.DateTimeField(verbose_name="update at", auto_now=True)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-    is_admin = models.BooleanField(default=False)
-    is_superuser = models.BooleanField(default=False)
+    first_name = models.CharField(verbose_name="Nome", max_length=30, unique=False)
+    last_name = models.CharField(verbose_name="Sobrenome", max_length=30, unique=False)
+    created_at = models.DateTimeField(verbose_name="Criado", auto_now_add=True)
+    updated_at = models.DateTimeField(verbose_name="Atualizado", auto_now=True)
+    is_active = models.BooleanField(verbose_name="Ativo", default=True)
+    is_staff = models.BooleanField(verbose_name="Básico", default=False)
+    is_admin = models.BooleanField(verbose_name="Administrador", default=False)
+    is_superuser = models.BooleanField(verbose_name="Root", default=False)
     profile_image = models.ImageField(max_length=255, upload_to=get_profile_image_filepath, null=True, blank=True, default=get_default_profile_image)
     hide_email = models.BooleanField(default=True)
 
