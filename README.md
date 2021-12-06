@@ -1,4 +1,4 @@
-### Modelo django usando AbstractBaseUser
+### Projeto Base Django usando AbstractBaseUser
 
 Ver arquivos:
 - admin/backends.py
