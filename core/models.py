@@ -36,7 +36,7 @@ def get_profile_image_filepath(self):
     return f'profile_images/{self.pk}/{"profile_image.png"}'
 
 def get_default_profile_image():
-    return "codingwithdacio/logo_1080_1080.png"
+    return "media/logo_1080_1080.png"
 
 class Account(AbstractBaseUser):
     email = models.EmailField(verbose_name="email", max_length=60, unique=True)
