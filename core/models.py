@@ -6,24 +6,24 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 # create a superuser
 class MyAccountManager(BaseUserManager):
 
-    def create_user(self, email, username, password=None):
+    def create_user(self, email, password=None):
         if not email:
             raise ValueError("Usuários devem ter endereço de email.")
-        if not username:
-            raise ValueError("Usuários devem ter username.")
+        # if not username:
+        #     raise ValueError("Usuários devem ter username.")
 
         user = self.model(
             email=self.normalize_email(email), 
-            username = username,
+            # username = username,
         )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, username, password):
+    def create_superuser(self, email, password):
         user = self.create_user(
             email=self.normalize_email(email),
-            username=username,
+            # username=username,
             password=password
         )
         user.is_admin = True
@@ -40,7 +40,9 @@ def get_default_profile_image():
 
 class Account(AbstractBaseUser):
     email = models.EmailField(verbose_name="email", max_length=60, unique=True)
-    username = models.CharField(max_length=30, unique=True)
+    username = models.CharField(max_length=30, unique=True, blank=True)
+    first_name = models.CharField(max_length=30, unique=False)
+    last_name = models.CharField(max_length=30, unique=False)
     created_at = models.DateTimeField(verbose_name="create at", auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name="update at", auto_now=True)
     is_active = models.BooleanField(default=True)
@@ -53,10 +55,10 @@ class Account(AbstractBaseUser):
     objects = MyAccountManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    # REQUIRED_FIELDS = ['username']
 
     def __str__(self):
-        return self.username
+        return self.email
 
     def get_profile_image_filename(self):
         return str(self.profile_image)[str(self.profile_image).index(f'profile_images/{self.pk}/'):]
