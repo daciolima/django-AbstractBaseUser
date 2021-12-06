@@ -1,4 +1,4 @@
-### Projeto Base Django usando AbstractBaseUser
+### Projeto Base Django usando AbstractBaseUser/DRF/JWT
 
 Ver arquivos:
 - admin/backends.py
